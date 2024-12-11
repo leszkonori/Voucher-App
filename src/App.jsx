@@ -1,12 +1,17 @@
-import logo from './logo.svg';
 import './App.css';
 import VoucherManagement from './VoucherManagement';
+import VoucherRedemption from './VoucherRedemption';
+import VoucherProvider from './VoucherContext';
 
 function App() {
   return (
-    <div className="App">
-      <VoucherManagement/>
-    </div>
+    <VoucherProvider>
+      <div className="App">
+        <VoucherManagement />
+        <VoucherRedemption />
+      </div>
+    </VoucherProvider>
+
   );
 }
 
