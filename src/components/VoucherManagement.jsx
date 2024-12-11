@@ -1,5 +1,5 @@
 import VoucherSettings from './VoucherSettings';
-import { VoucherContext } from './VoucherContext';
+import { VoucherContext } from '../contexts/VoucherContext';
 import { useContext } from 'react';
 
 export default function VoucherManagement() {

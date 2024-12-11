@@ -1,9 +1,10 @@
 import './App.css';
-import VoucherManagement from './VoucherManagement';
-import VoucherRedemption from './VoucherRedemption';
-import VoucherProvider from './VoucherContext';
+import VoucherManagement from './components/VoucherManagement';
+import VoucherRedemption from './components/VoucherRedemption';
+import VoucherProvider from './contexts/VoucherContext';
 
 function App() {
+
   return (
     <VoucherProvider>
       <div className="App">

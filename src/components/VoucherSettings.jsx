@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import { VoucherContext } from './VoucherContext';
+import { VoucherContext } from '../contexts/VoucherContext';
 
 const VoucherSettings = () => {
     const { addVoucher } = useContext(VoucherContext);
@@ -42,6 +42,10 @@ const VoucherSettings = () => {
             redeemed: false,
         };
         addVoucher(newVoucher);
+        setVoucherLimit('unlimited');
+        setLimitNumber('');
+        setVoucherCode('');
+        setValidUntil('');
     }
 
     return (
