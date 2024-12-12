@@ -13,17 +13,23 @@ export default function RedeemVoucher({ messageSetter }) {
         event.preventDefault();
         const message = redeemVoucher(inputCode);
         messageSetter(message);
+        setInputCode('');
     }
 
     return (
-        <form>
-            <div>
+        <form className="flex flex-col items-center">
+            <div className="mb-3">
                 <label>
                     Your code:
-                    <input type="text" value={inputCode} onChange={handleCodeInput} />
+                    <input
+                        className="p-1 ml-2 text-base border-solid border-gray-300 border-2 rounded-md"
+                        type="text" value={inputCode} onChange={handleCodeInput} />
                 </label>
             </div>
-            <button onClick={handleRedeem}>Redeem</button>
+            <button
+                className="border-black border-solid border-2 rounded-lg p-2 text-base font-bold shadow-md shadow-black
+                active:shadow-none"
+                onClick={handleRedeem}>Redeem</button>
         </form>
 
     );

@@ -21,7 +21,7 @@ const VoucherSettings = () => {
         }
     };
 
-    const handleUsageLimitChange = (e) => {
+    const handleLimitNumberChange = (e) => {
         setLimitNumber(e.target.value);
     };
 
@@ -31,7 +31,7 @@ const VoucherSettings = () => {
 
     function handleCreate(event) {
         event.preventDefault();
-        
+
         const newVoucher = {
             code: voucherCode,
             redemptionLimit: {
@@ -49,20 +49,23 @@ const VoucherSettings = () => {
     }
 
     return (
-        <form>
-            <div>
+        <form className="flex flex-col items-center">
+            <div className="mb-3">
                 <label>
                     Voucher Code:
                     <input
+                        className="p-1 ml-2 text-base border-solid border-gray-300 border-2 rounded-md"
                         type="text"
                         value={voucherCode}
                         onChange={handleCodeInput}
+                        required
                     />
                 </label>
             </div>
-            <div>
-                <label>
+            <div className="mb-3">
+                <label className="mr-6">
                     <input
+                        className="mr-1"
                         type="radio"
                         value="unlimited"
                         name="voucher-limit"
@@ -73,6 +76,7 @@ const VoucherSettings = () => {
                 </label>
                 <label>
                     <input
+                        className="mr-1"
                         type="radio"
                         value="limited"
                         name="voucher-limit"
@@ -82,30 +86,34 @@ const VoucherSettings = () => {
                     Limited redemption
                 </label>
             </div>
-            <div>
-                <label>
-                    Redemption limit:
-                    <input
-                        type="number"
-                        value={limitNumber}
-                        onChange={handleUsageLimitChange}
-                        min="1"
-                        placeholder="Number of usage"
-                        disabled={voucherLimit === 'unlimited'}
-                    />
-                </label>
-            </div>
-            <div>
+            {voucherLimit === 'limited' &&
+                <div className="mb-3">
+                    <label>
+                        Redemption limit:
+                        <input
+                            className="ml-2 border-2 border-solid border-gray-300 rounded-md p-1 w-14"
+                            type="number"
+                            value={limitNumber}
+                            onChange={handleLimitNumberChange}
+                            min="1"
+                        />
+                    </label>
+                </div>}
+            <div className="mb-3">
                 <label>
                     Valid until:
                     <input
+                        className="ml-2 border-2 border-solid border-gray-300 rounded-md"
                         type="date"
                         value={validUntil}
                         onChange={handleDateInput}
                     />
                 </label>
             </div>
-            <button onClick={handleCreate}>Create voucher</button>
+            <button
+                className="border-black border-solid border-2 rounded-lg p-2 text-base font-bold shadow-md shadow-black
+                active:shadow-none"
+                type="submit" onClick={handleCreate}>Create voucher</button>
         </form>
     );
 };

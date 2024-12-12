@@ -13,15 +13,16 @@ export default function VoucherProvider({ children }) {
     }
 
     function redeemVoucher(code) {
-        const today = new Date();
-
         let isValid = false;
         let expired = false;
 
         const updatedVouchers = vouchers.map((voucher) => {
             //Code exists
             if (voucher.code === code) {
+                const today = new Date();
                 const dueDate = new Date(voucher.validUntil);
+                today.setHours(0, 0, 0, 0);
+                dueDate.setHours(0, 0, 0, 0);
                 //After expiry date
                 if (dueDate < today) {
                     expired = true;
@@ -32,9 +33,10 @@ export default function VoucherProvider({ children }) {
                     expired = true;
                     return voucher;
                 }
+                //Reduce redemption number
                 if (voucher.redemptionLimit.limited) {
                     voucher.redemptionLimit.limitNumber--;
-                    if(voucher.redemptionLimit.limitNumber === 0) {
+                    if (voucher.redemptionLimit.limitNumber <= 0) {
                         voucher.redeemed = true;
                     }
                 }

@@ -6,8 +6,8 @@ export default function VoucherManagement() {
     const { vouchers } = useContext(VoucherContext);
 
     return (
-        <>
-            <h2>Voucher Management</h2>
+        <div className="">
+            <h2 className="text-3xl mb-5 font-bold text-center mt-4">Voucher Management</h2>
             <VoucherSettings />
             <ul>
                 {vouchers.map((voucher) => (
@@ -18,6 +18,6 @@ export default function VoucherManagement() {
                     </li>
                 ))}
             </ul>
-        </>
+        </div>
     );
 }
