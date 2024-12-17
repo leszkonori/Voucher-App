@@ -1,0 +1,45 @@
+package com.vouchersystem.voucher_system.controller;
+
+//import java.time.LocalDateTime;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.vouchersystem.voucher_system.model.Voucher;
+import com.vouchersystem.voucher_system.service.VoucherService;
+
+@RestController
+@RequestMapping("/api/vouchers")
+@CrossOrigin(origins = "http://localhost:3000")
+public class VoucherController {
+	
+	@Autowired
+    private VoucherService voucherService;
+	
+	// Voucher létrehozása
+    @PostMapping
+    public Voucher createVoucher(@RequestBody Voucher voucher) {
+        // LocalDateTime validUntilDate = LocalDateTime.parse(validUntil);
+        return voucherService.createVoucher(voucher);
+    }
+    
+    // Voucherek lekérése
+    @GetMapping
+    public List<Voucher> getAllVouchers() {
+        return voucherService.getVoucherRepository().findAll();
+    }
+    
+    // Voucher beváltása
+    @PostMapping("/redeem/{code}")
+    public String redeemVoucher(@PathVariable String code) {
+        return voucherService.redeemVoucher(code);
+    }
+}

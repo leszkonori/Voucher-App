@@ -1,0 +1,5 @@
+package com.vouchersystem.voucher_system.service;
+
+public class VoucherService {
+
+}
