@@ -1,0 +1,60 @@
+package com.vouchersystem.voucher_system.service;
+
+import java.time.LocalDateTime;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.vouchersystem.voucher_system.model.Voucher;
+import com.vouchersystem.voucher_system.repository.VoucherRepository;
+
+import jakarta.transaction.Transactional;
+
+@Service
+public class VoucherService {
+
+	@Autowired
+    private VoucherRepository voucherRepository;
+	
+	public Voucher createVoucher(String code, boolean limited, int limitNumber, LocalDateTime validUntil) {
+        Voucher voucher = new Voucher();
+        voucher.setCode(code);
+        voucher.setLimited(limited);
+        voucher.setLimitNumber(limitNumber);
+        voucher.setValidUntil(validUntil);
+        voucher.setRedeemed(false);
+        return voucherRepository.save(voucher);
+    }
+	
+	public Optional<Voucher> getVoucherByCode(String code) {
+        return voucherRepository.findByCode(code);
+    }
+	
+	@Transactional
+    public String redeemVoucher(String code) {
+        Optional<Voucher> optionalVoucher = voucherRepository.findByCode(code);
+
+        if (optionalVoucher.isPresent()) {
+            Voucher voucher = optionalVoucher.get();
+            
+            // Ellenőrizzük, hogy érvényes-e
+            if (voucher.getValidUntil().isBefore(LocalDateTime.now())) {
+                return "Voucher is expired";
+            }
+
+            // Ellenőrizzük, hogy elérte-e a maximális beváltási számot
+            if (voucher.isLimited() && voucher.getLimitNumber() == 0) {
+                voucher.setRedeemed(true);
+            	return "Voucher redemption limit reached";
+            }
+
+            // Növeljük a beváltás számát
+            voucher.setRedemptionCount(voucher.getRedemptionCount() + 1);
+            voucherRepository.save(voucher);
+
+            return "Voucher redeemed successfully";
+        } else {
+            return "Voucher not found";
+        }
+}

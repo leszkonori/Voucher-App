@@ -1,0 +1,31 @@
+package com.vouchersystem.voucher_system.service;
+
+import java.time.LocalDateTime;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.vouchersystem.voucher_system.model.Voucher;
+import com.vouchersystem.voucher_system.repository.VoucherRepository;
+
+@Service
+public class VoucherService {
+
+	@Autowired
+    private VoucherRepository voucherRepository;
+	
+	public Voucher createVoucher(String code, boolean limited, int limitNumber, LocalDateTime validUntil) {
+        Voucher voucher = new Voucher();
+        voucher.setCode(code);
+        voucher.setLimited(limited);
+        voucher.setLimitNumber(limitNumber);
+        voucher.setValidUntil(validUntil);
+        voucher.setRedeemed(false);
+        return voucherRepository.save(voucher);
+    }
+	
+	public Optional<Voucher> getVoucherByCode(String code) {
+        return voucherRepository.findByCode(code);
+    }
+}
