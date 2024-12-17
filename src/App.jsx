@@ -1,12 +1,17 @@
-import logo from './logo.svg';
 import './App.css';
-import VoucherManagement from './VoucherManagement';
+import VoucherManagement from './components/VoucherManagement';
+import VoucherRedemption from './components/VoucherRedemption';
+import VoucherProvider from './contexts/VoucherContext';
 
 function App() {
+
   return (
-    <div className="App">
-      <VoucherManagement/>
-    </div>
+    <VoucherProvider>
+      <div className="flex flex-col gap-12 md:items-center md:justify-evenly md:flex-row md:h-screen text-lg font-serif">
+        <VoucherManagement />
+        <VoucherRedemption />
+      </div>
+    </VoucherProvider>
   );
 }
 
