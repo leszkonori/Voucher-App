@@ -1,28 +1,34 @@
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { VoucherContext } from '../contexts/VoucherContext';
 
 const VoucherSettings = () => {
-    const { addVoucher } = useContext(VoucherContext);
+    const { createVoucher } = useContext(VoucherContext);
 
-    const [voucherLimit, setVoucherLimit] = useState('unlimited');
+    const [voucherLimit, setVoucherLimit] = useState(false);
     const [limitNumber, setLimitNumber] = useState('');
     const [voucherCode, setVoucherCode] = useState('');
     const [validUntil, setValidUntil] = useState('');
+
+    useEffect(() => {
+        const today = new Date().toISOString().split("T")[0];
+        setValidUntil(today);
+    }, []);
 
     function handleCodeInput(event) {
         setVoucherCode(event.target.value);
     }
 
     const handleVoucherLimitChange = (e) => {
-        setVoucherLimit(e.target.value);
+        setVoucherLimit(e.target.value === 'true');
 
-        if (e.target.value === 'unlimited') {
+        if (e.target.value === 'false') {
             setLimitNumber('');
         }
     };
 
     const handleLimitNumberChange = (e) => {
-        setLimitNumber(e.target.value);
+        if(e.target.value === '' || /^[1-9]\d*$/.test(e.target.value))
+            setLimitNumber(e.target.value);
     };
 
     function handleDateInput(event) {
@@ -34,18 +40,15 @@ const VoucherSettings = () => {
 
         const newVoucher = {
             code: voucherCode,
-            redemptionLimit: {
-                limited: voucherLimit === 'limited',
-                limitNumber: limitNumber
-            },
+            limited: voucherLimit,
+            limitNumber: limitNumber,
             validUntil: validUntil,
             redeemed: false,
         };
-        addVoucher(newVoucher);
-        setVoucherLimit('unlimited');
+        createVoucher(newVoucher);
+        setVoucherLimit(false);
         setLimitNumber('');
         setVoucherCode('');
-        setValidUntil('');
     }
 
     return (
@@ -58,7 +61,6 @@ const VoucherSettings = () => {
                         type="text"
                         value={voucherCode}
                         onChange={handleCodeInput}
-                        required
                     />
                 </label>
             </div>
@@ -67,9 +69,9 @@ const VoucherSettings = () => {
                     <input
                         className="mr-1"
                         type="radio"
-                        value="unlimited"
+                        value='false'
                         name="voucher-limit"
-                        checked={voucherLimit === 'unlimited'}
+                        checked={voucherLimit === false}
                         onChange={handleVoucherLimitChange}
                     />
                     Unlimited redemption
@@ -78,15 +80,15 @@ const VoucherSettings = () => {
                     <input
                         className="mr-1"
                         type="radio"
-                        value="limited"
+                        value='true'
                         name="voucher-limit"
-                        checked={voucherLimit === 'limited'}
+                        checked={voucherLimit === true}
                         onChange={handleVoucherLimitChange}
                     />
                     Limited redemption
                 </label>
             </div>
-            {voucherLimit === 'limited' &&
+            {voucherLimit &&
                 <div className="mb-3">
                     <label>
                         Redemption limit:

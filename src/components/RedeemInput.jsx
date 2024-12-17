@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
 import { VoucherContext } from '../contexts/VoucherContext';
 
-export default function RedeemVoucher({ messageSetter }) {
+export default function RedeemInput() {
     const [inputCode, setInputCode] = useState('');
 
     const { redeemVoucher } = useContext(VoucherContext);
@@ -11,8 +11,7 @@ export default function RedeemVoucher({ messageSetter }) {
     }
     function handleRedeem(event) {
         event.preventDefault();
-        const message = redeemVoucher(inputCode);
-        messageSetter(message);
+        redeemVoucher(inputCode);
         setInputCode('');
     }
 
